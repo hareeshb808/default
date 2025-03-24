@@ -6,6 +6,14 @@ terraform {
       version = ">=4.0.0"
     }
   }
+  backend "azurerm" {
+    resource_group_name  = "NextOps"  
+    storage_account_name = "nextopstfsat20"                      
+    container_name       = "tfstate"                       
+    key                  = "terraform.tfstate"
+    access_key          = "jfaksdnkcnidjcijdiankdnkndinikniknikanfidif"        
+  }
+}
 }
 
 provider "azurerm" {
