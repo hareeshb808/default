@@ -17,6 +17,9 @@ terraform {
 }
 
 provider "azurerm" {
+  alias                      = "management"
+  subscription_id            = ${{ secrets.subid }}
+  skip_provider_registration = true
   features {}
 }
 
