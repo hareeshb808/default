@@ -9,7 +9,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "test-workflow-runner-rg"  
     storage_account_name = "testrunnerworkflow"                      
-    container_name       = "tfstate"                       
+    container_name       = "tfrunner"                       
     key                  = "terraform.tfstate"
     access_key          = ${{ secrets.ACCESSKEY }}        
   }
