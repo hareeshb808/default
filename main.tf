@@ -7,11 +7,11 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "NextOps"  
-    storage_account_name = "nextopstfsat20"                      
+    resource_group_name  = "test-workflow-runner-rg"  
+    storage_account_name = "testrunnerworkflow"                      
     container_name       = "tfstate"                       
     key                  = "terraform.tfstate"
-    access_key          = "jfaksdnkcnidjcijdiankdnkndinikniknikanfidif"        
+    access_key          = ${{ secrets.ACCESSKEY }}        
   }
 }
 }
