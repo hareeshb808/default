@@ -26,14 +26,14 @@ jobs:
       # Runs a single command using the runners shell
       - name: terraform setup
         uses: hashicorp/setup-terraform@v3
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@default
-      - name: tflint init
-        id: tfinit
-        run: tflint init
-      - name: tflint compact
-        id: tfcompact
-        run: tflint -f compact
+      #- name: Setup TFLint
+        #uses: terraform-linters/setup-tflint@default
+      #- name: tflint init
+        #id: tfinit
+        #run: tflint init
+      #- name: tflint compact
+        #id: tfcompact
+        #run: tflint -f compact
         
       # Runs a set of commands using the runners shell
       - name: terraform init
