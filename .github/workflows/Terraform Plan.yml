@@ -17,6 +17,11 @@ jobs:
   terraform-plan:
     # The type of runner that the job will run on
     runs-on: self-hosted
+    environment: Development
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./workfolder
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -36,12 +41,19 @@ jobs:
         #run: tflint -f compact
         
       # Runs a set of commands using the runners shell
+      
       - name: terraform init
         id: init
         run: terraform init
+        
+      - name: terraform format
+        id: fmt
+        run: terraform fmt -check
+        
       - name: terraform validate
         id: validate
         run: terraform validate
+        
       - name: terraform plan
         id: plan
         run: terraform plan
