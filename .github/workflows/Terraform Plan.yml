@@ -20,13 +20,17 @@ jobs:
     environment: Development
     defaults:
       run:
-        shell: pwsh
+        shell: bash
         #working-directory: ./workfolder
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+      - name: Set Terraform CLI Path
+        env:
+          TERRAFORM_CLI_PATH: C:\\actions-runner\\workfolder\\_temp\\535700e0-0677-44e7-b9dc-4c3990b932d5
+        run: echo "Terraform CLI path is set to $TERRAFORM_CLI_PATH"
 
       # Runs a single command using the runners shell
       - name: terraform setup
