@@ -20,7 +20,7 @@ jobs:
     environment: Development
     defaults:
       run:
-        shell: bash
+        shell: pwsh
         #working-directory: ./workfolder
 
     # Steps represent a sequence of tasks that will be executed as part of the job
