@@ -1,0 +1,54 @@
+name: Terraform Azure Pipeline
+ 
+on:
+  push:
+    branches:
+      - master
+ 
+jobs:
+  terraform:
+    runs-on: Linux
+ 
+    steps:
+      - name: Install Latest Azure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates curl apt-transport-https lsb-release gnupg
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+ 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
+ 
+      - name: Azure Login
+        run: |
+          az login --service-principal \
+            --username ${{ secrets.CID }} \
+            --password ${{ secrets.SECRETID }} \
+            --tenant ${{ secrets.TID }} \
+            --output none
+ 
+      - name: Terraform Init (With Backend Config)
+        env:
+          TF_VAR_subscription_id: ${{ secrets.SUB }}
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.RGNAME }}" \
+            -backend-config="storage_account_name=${{ secrets.SANAME }}" \
+            -backend-config="container_name=${{ secrets.CNAME }}" \
+            -backend-config="key=${{ secrets.KEYNAME }}" \
+            -backend-config="access_key=${{ secrets.ACCESSKEY }}"
+ 
+      - name: Terraform Plan
+        env:
+          TF_VAR_subscription_id: ${{ secrets.SUB }}
+        run: terraform plan -out=tfplan
+ 
+      - name: Terraform Apply
+        env:
+          TF_VAR_subscription_id: ${{ secrets.SUB }}
+        if: github.ref == 'refs/heads/master'
+        run: terraform apply "tfplan"
