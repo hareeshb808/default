@@ -42,7 +42,7 @@
 #       with:
 #         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-name: 'Terraform'
+name: 'Terraform_az_plan'
 
 on:
   push:
@@ -55,7 +55,7 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: production
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -67,15 +67,23 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
-
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
+      #with:
+        #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        
+    - name: Azure Login
+      uses: azure/login@v1
       with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
+        client-id: ${{ secrets.AZ_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZ_TENANT_ID }}
+        client-secret: ${{ secrets.AZ_CLIENT_SECRET }}
+        
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      env:
+          ARM_ACCESS_KEY: ${{ secrets.AZ_SA_ACCESS_KEY }}
       run: terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
@@ -84,7 +92,9 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=true
+      env:
+          ARM_ACCESS_KEY: ${{ secrets.AZ_SA_ACCESS_KEY }}
+      run: terraform plan
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
