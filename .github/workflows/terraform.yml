@@ -41,7 +41,7 @@
 #       with:
 #         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-name: 'Terraform_az_plan'
+name: 'Terraform'
 
 on:
   push:
