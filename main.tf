@@ -11,14 +11,14 @@ terraform {
     storage_account_name = "satfstatefilehareesh"                      
     container_name       = "tfstate"                       
     key                  = "gitstate.tfstate"
-    access_key          = ${{ secrets.ACCESSKEY }}        
+    access_key          = ${{ secrets.AZ_SA_ACCESS_KEY }}        
   }
 }
 }
 
 provider "azurerm" {
   alias                      = "management"
-  subscription_id            = ${{ secrets.subid }}
+  subscription_id            = ${{ secrets.AZ_SUB_ID }}
   skip_provider_registration = true
   features {}
 }
