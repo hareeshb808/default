@@ -7,10 +7,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "test-workflow-runner-rg"  
+    resource_group_name  = "statefileSA_rg"  
     storage_account_name = "satfstatefilehareesh"                      
     container_name       = "tfstate"                       
-    key                  = "tfstatefile"
+    key                  = "gitstate.tfstate"
     access_key          = ${{ secrets.ACCESSKEY }}        
   }
 }
